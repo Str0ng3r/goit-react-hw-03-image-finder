@@ -13,9 +13,9 @@ fcOnSb = (val) => {
   axios
     .get(`https://pixabay.com/api/?q=${val}&page=1&key=34891716-36b65b6efae61fa69d260cb9b&image_type=photo&orientation=horizontal&per_page=12`)
     .then(response => {
-      console.log(response.data);
+      console.log(response.data.hits);
       this.setState({
-        massiveData:response.data
+        massiveData:response.data.hits
       })
     })
     .catch(error => {

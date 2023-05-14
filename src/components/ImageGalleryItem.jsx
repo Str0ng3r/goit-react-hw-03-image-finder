@@ -1,7 +1,7 @@
 export const LiList = ({src,id,alt}) => {
     return(
-        <li className="gallery-item">
-  <img src="" alt="" />
+        <li key={id} className="gallery-item">
+  <img src={src} alt={alt} />
 </li>
     )
 }
