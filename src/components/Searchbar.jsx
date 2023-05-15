@@ -1,21 +1,21 @@
 import { Component } from "react";
-
+import styles from './searchcomp.css'
 export class SearchBar extends Component {
 state = {
     valueInput:''
 }
     render(){
         return(
-<header className="searchbar">
-  <form className="form" onSubmit={(evt) => {
+<header className={styles.searchbar}>
+  <form className={styles.SearchForm} onSubmit={(evt) => {
         evt.preventDefault()
         this.props.onSubmit(this.state.valueInput)
     this.setState({
         valueInput:''
     })
   }}>
-    <button type="submit" className="button">
-      <span className="button-label">Search</span>
+    <button type="submit" className={styles.button}>
+      <span className={styles['button-label']}>Search</span>
     </button>
 
     <input
@@ -23,7 +23,7 @@ state = {
     valueInput: evt.target.value
     })}}
     value={this.state.valueInput}
-      className="input"
+      className={styles.input}
       type="text"
       autoComplete="off"
       autoFocus
