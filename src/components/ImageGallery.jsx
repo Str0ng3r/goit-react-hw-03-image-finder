@@ -1,19 +1,10 @@
 import { LiList } from "./ImageGalleryItem";
-
+import styles from './styles.module.css'
 export const ListGallery = ({mass}) => {
   return (
-    <ul className="gallery" style={{
-        display: 'flex',
-        marginTop: 0,
-        marginBottom: 0,
-        padding: 0,
-        width:'1200px',
-        listStyle: 'none',
-        marginLeft: 'auto',
-        marginRight: 'auto'
-    }}>
+    <ul className={styles.ImageGallery}>
       {mass.map(item => (
-        <LiList key={item.id} id={item.id} src={item.largeImageURL} alt={item.tags} />
+        <LiList key={item.id} big={item.id} id={item.id} src={item.largeImageURL} alt={item.tags} />
       ))}
     </ul>
   );

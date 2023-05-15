@@ -1,12 +1,12 @@
 import { Component } from "react";
-import styles from './searchcomp.css'
+import styles from './styles.module.css'
 export class SearchBar extends Component {
 state = {
     valueInput:''
 }
     render(){
         return(
-<header className={styles.searchbar}>
+<header className={styles.Searchbar}>
   <form className={styles.SearchForm} onSubmit={(evt) => {
         evt.preventDefault()
         this.props.onSubmit(this.state.valueInput)
@@ -14,7 +14,7 @@ state = {
         valueInput:''
     })
   }}>
-    <button type="submit" className={styles.button}>
+    <button type="submit" className={styles.SearchFormbutton}>
       <span className={styles['button-label']}>Search</span>
     </button>
 
@@ -23,7 +23,7 @@ state = {
     valueInput: evt.target.value
     })}}
     value={this.state.valueInput}
-      className={styles.input}
+      className={styles.SearchForminput}
       type="text"
       autoComplete="off"
       autoFocus

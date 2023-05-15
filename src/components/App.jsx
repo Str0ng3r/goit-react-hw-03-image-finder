@@ -4,6 +4,7 @@ import { SearchBar } from "./Searchbar"
 import axios from "axios"
 import { SpinnerWait } from "./loadesSpinner"
 import { ButtonLoad } from "./ButtonLoader"
+import styles from './styles.module.css'
 export class App extends Component {
 state = {
 massiveData :[],
@@ -64,17 +65,7 @@ fcOnSb = (val) => {
 
   render (){
     return(
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        flexDirection:'column',
-        color: '#010101'
-      }}
-    >
+    <div className={styles.App}>
       <SearchBar onSubmit={this.fcOnSb}></SearchBar>
       {this.state.errorState && <SpinnerWait message={'Sorry error'}></SpinnerWait>}
       {this.state.spinner && <SpinnerWait message={'plz wait'}></SpinnerWait>}

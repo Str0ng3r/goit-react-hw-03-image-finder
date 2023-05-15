@@ -1,16 +1,38 @@
-export const LiList = ({src,id,alt}) => {
-    return(
-        <li key={id} className="gallery-item" style={{
-            listStyleType:'none',
-            borderRadius: '2px',
-            boxShadow: '0px 1px 3px 0px rgba(0, 0, 0, 0.2)0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12)'
-        }}>
-  <img src={src} alt={alt} style={{
-       width: '300px',
-       height: '260px',
-       objectFit: 'cover',
-       transition: 'transform 250ms cubic-bezier(0.4, 0, 0.2, 1)'
-  }}/>
-</li>
-    )
-}
+import { useState } from 'react';
+import styles from './styles.module.css'
+export const LiList = ({src, id, alt, big}) => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleModalOpen = () => {
+    setShowModal(true);
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
+  return (
+    <>
+      <li
+        key={id}
+        className={styles.ImageGalleryItem}
+        onClick={handleModalOpen}
+      >
+        <img
+        className={styles.ImageGalleryItemimage}
+          src={src}
+          data-big={big}
+          alt={alt}
+        />
+      </li>
+
+      {showModal && (
+        <div className={styles.Overlay} onClick={handleModalClose}>
+          <div className={styles.Modal}>
+            <img src={src} alt={alt} />
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
