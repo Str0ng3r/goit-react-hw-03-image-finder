@@ -1,7 +1,7 @@
-import PropTypes from "prop-types"
+import PropTypes from 'prop-types';
 import { useState } from 'react';
-import styles from './styles.module.css'
-export const LiList = ({src, id, alt, big}) => {
+import styles from './styles.module.css';
+export const LiList = ({ src, id, alt, big }) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleModalOpen = () => {
@@ -20,7 +20,7 @@ export const LiList = ({src, id, alt, big}) => {
         onClick={handleModalOpen}
       >
         <img
-        className={styles.ImageGalleryItemimage}
+          className={styles.ImageGalleryItemimage}
           src={src}
           data-big={big}
           alt={alt}
@@ -37,9 +37,9 @@ export const LiList = ({src, id, alt, big}) => {
     </>
   );
 };
-LiList.propTypes= {
-  src:PropTypes.string.isRequired,
-  id:PropTypes.string.isRequired,
-  alt:PropTypes.string.isRequired,
-  big:PropTypes.string.isRequired
-}
+LiList.propTypes = {
+  src: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+  big: PropTypes.string.isRequired,
+};
