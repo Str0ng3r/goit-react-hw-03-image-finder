@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { useState } from 'react';
 import styles from './styles.module.css'
 export const LiList = ({src, id, alt, big}) => {
@@ -36,3 +37,9 @@ export const LiList = ({src, id, alt, big}) => {
     </>
   );
 };
+LiList.propTypes= {
+  src:PropTypes.string.isRequired,
+  id:PropTypes.string.isRequired,
+  alt:PropTypes.string.isRequired,
+  big:PropTypes.string.isRequired
+}

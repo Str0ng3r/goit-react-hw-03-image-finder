@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { LiList } from "./ImageGalleryItem";
 import styles from './styles.module.css'
 export const ListGallery = ({mass}) => {
@@ -8,4 +9,7 @@ export const ListGallery = ({mass}) => {
       ))}
     </ul>
   );
+}
+ListGallery.propTypes = {
+  mass:PropTypes.array.isRequired
 }

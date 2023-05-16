@@ -12,13 +12,15 @@ massiveLoading:[],
 spinner:false,
 errorState:false,
 searchName:'',
+buttonLoad:false,
 pages:2
 }
 
 fcLoader = () => {
   this.setState(prevState => ({
     pages: prevState.pages + 1,
-    spinner: true
+    spinner: true,
+    buttonLoad:false
   }));
   axios
     .get(`https://pixabay.com/api/?q=${this.state.searchName}&page=${this.state.pages}&key=34891716-36b65b6efae61fa69d260cb9b&image_type=photo&orientation=horizontal&per_page=12`)
@@ -27,11 +29,16 @@ fcLoader = () => {
         massiveLoading:prevState.massiveLoading.concat(response.data.hits),
         spinner: false
       }))
+      if(response.data.hits.length === 12){
+        this.setState({
+          buttonLoad:true
+        })
+      }
     })
       .catch(error => {
         this.setState({
           errorState:true,
-          spinner: false
+          spinner: false,
         })
         console.log(error);
       });
@@ -43,12 +50,17 @@ fcOnSb = (val) => {
   this.setState({
     searchName:val,
     massiveLoading:[],
-    spinner:true
+    spinner:true,
+    pages:2
   })
   axios
     .get(`https://pixabay.com/api/?q=${val}&page=1&key=34891716-36b65b6efae61fa69d260cb9b&image_type=photo&orientation=horizontal&per_page=12`)
     .then(response => {
       console.log(response.data.hits);
+    if(response.data.hits.length === 12){this.setState({
+buttonLoad:true
+      })}
+
       this.setState({
         errorState:false,
         spinner:false,
@@ -70,8 +82,8 @@ fcOnSb = (val) => {
       {this.state.errorState && <SpinnerWait message={'Sorry error'}></SpinnerWait>}
       {this.state.spinner && <SpinnerWait message={'plz wait'}></SpinnerWait>}
       {this.state.massiveData.length>1 && <ListGallery mass={this.state.massiveData}></ListGallery>}
-      {this.state.massiveData.length === 12 && <ButtonLoad funcLoad={this.fcLoader}></ButtonLoad>}
       {this.state.massiveLoading.length>1 && <ListGallery mass={this.state.massiveLoading}></ListGallery>}
+      {this.state.buttonLoad && <ButtonLoad funcLoad={this.fcLoader}></ButtonLoad>}
     </div>
     )
   }
