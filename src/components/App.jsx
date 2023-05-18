@@ -5,6 +5,7 @@ import axios from 'axios';
 import { SpinnerWait } from './loadesSpinner';
 import { ButtonLoad } from './ButtonLoader';
 import styles from './styles.module.css';
+
 export class App extends Component {
   state = {
     massiveData: [],
@@ -16,87 +17,84 @@ export class App extends Component {
     pages: 2,
   };
 
-  fcLoader = () => {
-    this.setState(prevState => ({
-      pages: prevState.pages + 1,
-      spinner: true,
-      buttonLoad: false,
-    }));
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData = () => {
+    const { searchName, pages } = this.state;
+    this.setState({ spinner: true });
+
     axios
       .get(
-        `https://pixabay.com/api/?q=${this.state.searchName}&page=${this.state.pages}&key=34891716-36b65b6efae61fa69d260cb9b&image_type=photo&orientation=horizontal&per_page=12`
+        `https://pixabay.com/api/?q=${searchName}&page=${pages}&key=34891716-36b65b6efae61fa69d260cb9b&image_type=photo&orientation=horizontal&per_page=12`
       )
       .then(response => {
-        this.setState(prevState => ({
-          massiveLoading: prevState.massiveLoading.concat(response.data.hits),
+        const { hits } = response.data;
+        const massiveLoading = [...this.state.massiveLoading, ...hits];
+
+        this.setState({
+          massiveLoading,
           spinner: false,
-        }));
-        if (response.data.hits.length === 12) {
-          this.setState({
-            buttonLoad: true,
-          });
-        }
+          buttonLoad: hits.length === 12,
+        });
       })
       .catch(error => {
-        this.setState({
-          errorState: true,
-          spinner: false,
-        });
         console.log(error);
+        this.setState({ errorState: true, spinner: false });
       });
   };
 
   fcOnSb = val => {
-    console.log(val);
     this.setState({
       searchName: val,
       massiveLoading: [],
       spinner: true,
       pages: 2,
     });
+
     axios
       .get(
         `https://pixabay.com/api/?q=${val}&page=1&key=34891716-36b65b6efae61fa69d260cb9b&image_type=photo&orientation=horizontal&per_page=12`
       )
       .then(response => {
-        console.log(response.data.hits);
-        if (response.data.hits.length === 12) {
-          this.setState({
-            buttonLoad: true,
-          });
-        }
+        const { hits } = response.data;
 
         this.setState({
           errorState: false,
           spinner: false,
-          massiveData: response.data.hits,
+          massiveData: hits,
+          buttonLoad: hits.length === 12,
         });
       })
       .catch(error => {
-        this.setState({
-          errorState: true,
-        });
         console.log(error);
+        this.setState({ errorState: true });
       });
   };
 
+  fcLoader = () => {
+    this.setState(
+      prevState => ({
+        pages: prevState.pages + 1,
+        spinner: true,
+        buttonLoad: false,
+      }),
+      this.fetchData
+    );
+  };
+
   render() {
+    const { errorState, spinner, massiveData, massiveLoading, buttonLoad } = this.state;
+
     return (
       <div className={styles.App}>
-        <SearchBar onSubmit={this.fcOnSb}></SearchBar>
-        {this.state.errorState && (
-          <SpinnerWait message={'Sorry error'}></SpinnerWait>
-        )}
-        {this.state.spinner && <SpinnerWait message={'plz wait'}></SpinnerWait>}
-        {this.state.massiveData.length > 1 && (
-          <ListGallery mass={this.state.massiveData}></ListGallery>
-        )}
-        {this.state.massiveLoading.length > 1 && (
-          <ListGallery mass={this.state.massiveLoading}></ListGallery>
-        )}
-        {this.state.buttonLoad && (
-          <ButtonLoad funcLoad={this.fcLoader}></ButtonLoad>
-        )}
+        <SearchBar onSubmit={this.fcOnSb} />
+        {errorState && <SpinnerWait message="Произошла ошибка" />}
+        {spinner && <SpinnerWait message="Пожалуйста, подождите" />}
+        {massiveData.length > 1 && <ListGallery mass={massiveData} />}
+        {massiveLoading.length > 1 && <ListGallery mass={massiveLoading} />}
+        {buttonLoad && <ButtonLoad funcLoad={this.fcLoader} />}
       </div>
     );
   }
