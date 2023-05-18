@@ -85,7 +85,8 @@ export class App extends Component {
   };
 
   render() {
-    const { errorState, spinner, massiveData, massiveLoading, buttonLoad } = this.state;
+    const { errorState, spinner, massiveData, massiveLoading, buttonLoad } =
+      this.state;
 
     return (
       <div className={styles.App}>
