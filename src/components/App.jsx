@@ -17,8 +17,10 @@ export class App extends Component {
     pages: 2,
   };
 
-  componentDidMount() {
-    this.fetchData();
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.searchName !== this.state.searchName || prevState.pages !== this.state.pages) {
+      this.fetchData();
+    }
   }
 
   fetchData = () => {
@@ -52,25 +54,6 @@ export class App extends Component {
       spinner: true,
       pages: 2,
     });
-
-    axios
-      .get(
-        `https://pixabay.com/api/?q=${val}&page=1&key=34891716-36b65b6efae61fa69d260cb9b&image_type=photo&orientation=horizontal&per_page=12`
-      )
-      .then(response => {
-        const { hits } = response.data;
-
-        this.setState({
-          errorState: false,
-          spinner: false,
-          massiveData: hits,
-          buttonLoad: hits.length === 12,
-        });
-      })
-      .catch(error => {
-        console.log(error);
-        this.setState({ errorState: true });
-      });
   };
 
   fcLoader = () => {
@@ -92,9 +75,9 @@ export class App extends Component {
       <div className={styles.App}>
         <SearchBar onSubmit={this.fcOnSb} />
         {errorState && <SpinnerWait message="Произошла ошибка" />}
-        {spinner && <SpinnerWait message="Пожалуйста, подождите" />}
         {massiveData.length > 1 && <ListGallery mass={massiveData} />}
         {massiveLoading.length > 1 && <ListGallery mass={massiveLoading} />}
+        {spinner && <SpinnerWait message="Пожалуйста, подождите" />}
         {buttonLoad && <ButtonLoad funcLoad={this.fcLoader} />}
       </div>
     );

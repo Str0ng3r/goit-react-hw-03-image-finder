@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import styles from './styles.module.css';
+
 export const LiList = ({ src, id, alt, big }) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -12,13 +13,13 @@ export const LiList = ({ src, id, alt, big }) => {
     setShowModal(false);
   };
 
+  const handleClick = () => {
+    handleModalOpen();
+  };
+
   return (
     <>
-      <li
-        key={id}
-        className={styles.ImageGalleryItem}
-        onClick={handleModalOpen}
-      >
+      <li key={id} className={styles.ImageGalleryItem} onClick={handleClick}>
         <img
           className={styles.ImageGalleryItemimage}
           src={src}
@@ -27,16 +28,17 @@ export const LiList = ({ src, id, alt, big }) => {
         />
       </li>
 
-      {showModal && (
+      {showModal ? (
         <div className={styles.Overlay} onClick={handleModalClose}>
           <div className={styles.Modal}>
             <img src={src} alt={alt} />
           </div>
         </div>
-      )}
+      ) : null}
     </>
   );
 };
+
 LiList.propTypes = {
   src: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
