@@ -1,43 +1,65 @@
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import styles from './styles.module.css';
+import { Modal } from './Modal';
 
-export const LiList = ({ src, id, alt, big }) => {
-  const [showModal, setShowModal] = useState(false);
-
-  const handleModalOpen = () => {
-    setShowModal(true);
+export class LiList extends React.Component {
+  state = {
+    showModal: false,
   };
 
-  const handleModalClose = () => {
-    setShowModal(false);
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleModalOpen = () => {
+    this.setState({ showModal: true });
   };
 
-  const handleClick = () => {
-    handleModalOpen();
+  handleModalClose = () => {
+    this.setState({ showModal: false });
   };
 
-  return (
-    <>
-      <li key={id} className={styles.ImageGalleryItem} onClick={handleClick}>
-        <img
-          className={styles.ImageGalleryItemimage}
-          src={src}
-          data-big={big}
-          alt={alt}
-        />
-      </li>
+  handleKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      this.handleModalClose();
+    }
+  };
 
-      {showModal ? (
-        <div className={styles.Overlay} onClick={handleModalClose}>
-          <div className={styles.Modal}>
-            <img src={src} alt={alt} />
-          </div>
-        </div>
-      ) : null}
-    </>
-  );
-};
+  handleClick = () => {
+    this.handleModalOpen();
+  };
+
+  render() {
+    const { src, id, alt, big } = this.props;
+    const { showModal } = this.state;
+
+    return (
+      <>
+        <li
+          key={id}
+          className={styles.ImageGalleryItem}
+          onClick={this.handleClick}
+        >
+          <img
+            className={styles.ImageGalleryItemimage}
+            src={src}
+            data-big={big}
+            alt={alt}
+          />
+        </li>
+
+        {showModal ? (
+          <Modal src={src} alt={alt} onClose={this.handleModalClose} />
+        ) : null}
+      </>
+    );
+  }
+}
 
 LiList.propTypes = {
   src: PropTypes.string.isRequired,
